@@ -1,0 +1,23 @@
+
+; (function (window, document, undefined) {
+    'use strict';
+
+    var application = (function () {
+
+        var exports = {};    
+
+    
+    var _init = function () {
+            _loadFile();
+        };
+
+        exports.init = _init;
+
+        return exports;
+    })();
+
+    window.application = application;
+
+})(window, document);
+
+$(document).ready(application.init);

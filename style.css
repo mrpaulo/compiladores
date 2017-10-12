@@ -1,5 +1,73 @@
 #filecontents {
-            border: double;
-            overflow-y: scroll;
-            height: 400px;
+    border: double;
+    overflow-y: scroll;
+    height: 400px;
+}  
+#result {
+    border: double;
+    overflow-y: scroll;
+    height: 400px;
+}    
+div.container {
+    width: 100%;
+    border: 1px solid gray;
+}
+
+header, footer {
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: center;
+}
+
+aside {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+    padding: 1em;
+}
+
+img {
+    float: left;
+    max-width: 100px;
+    margin: 0;
+    padding: 1em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+   
+nav ul a {
+    text-decoration: none;
+}
+
+main {
+    margin-left: 170px;
+    border: 1px solid gray;
+    padding: 6em;
+    align-items: center;
+    overflow: hidden;
+}
+section {
+    margin-left: 150px;
+    border: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+    
+}
+section > section { float:left; }
+    .indent-1 { padding-left:50px; }
+
+article {
+    margin-left: 150px;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
+table, th, td {
+    border: 1px solid black;
+    align-items: center;
 }

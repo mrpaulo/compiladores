@@ -1,20 +1,52 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <style type="text/css" src="style.css"></style>
-    <script type="text/javascript" src="analizadorLexico.js" ></script>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="analizadorLexico.js"></script>
 
-    <title>FileAPI HTML5</title>
-    
+    <title>Analizador Léxico</title>
 </head>
-<body>
-   Por favor selecione arquivo que será lido:
-    <input type="file" id="txtfiletoread" /><br />
-    <div>Conteúdo do arquivo:</div>
-    <div id="filecontents">
-    </div>
 
+<body>
+    <header>
+        <h3>Analizador Léxico</h3>
+        <p> Por favor selecione arquivo que será lido:</p>
+        <input type="file" id="txtfiletoread" /><br />
+    </header>
+    <div id="container">
+        <div id="labelFile">
+            <p>Conteúdo do arquivo:</p>
+        </div>
+        <div id="filecontents"></div>
+        <div id="labelResult">
+            <p>Resultado da analize léxica:</p>
+        </div>
+        <div id="result">
+            <table class="table">
+                <thead>
+                    <tr>                        
+                        <th>Id</th>
+                        <th>Nome</th>
+                        <th>Classe</th>
+                        <th>Valor</th>
+                        <th>Posição</th>
+                    </tr>
+                </thead>
+                <tbody id="result-table"></tbody>
+            </table>
+
+        </div>
+    </div>
+    <footer>
+        <p> Faccat - Sistemas de Informação</p>
+        <p>Diciplina de Compiladores</p>
+        <p>Professor Leonardo Sapiras</p>
+        <p>Acadêmicos Lincon Reis, Paulo Rodrigues</p>
+        <p>2017/2</p>
+    </footer>
 </body>
+
 </html>
