@@ -1,0 +1,10 @@
+valor_1 = 10;
+valor_2 = 20;
+valor_3 = valor_1 + valor_2;
+escreve (valor_3);
+
+enquanto (valor_3 < 100) faca {
+ valor_3 = valor_3 - 10 + valor_2;  
+}
+
+escreve(valor_3);
