@@ -22,16 +22,16 @@ var _loadFile = function () {
                 //Initialize the FileReader object to read the 2file
                 var fileReader = new FileReader();
                 fileReader.onload = function (e) {
-                        fileContents.style.display = "block";
-                        divResult.style.display = "block";
-                        labelResult.style.display = "block";
-                        labelFile.style.display = "block";
-                        fileContents.innerText = fileReader.result;
-                        fileLoaded = fileReader.result;                        
-                        divResult = _analyzeFile();
+                    fileContents.style.display = "block";
+                    divResult.style.display = "block";
+                    labelResult.style.display = "block";
+                    labelFile.style.display = "block";
+                    fileContents.innerText = fileReader.result;
+                    fileLoaded = fileReader.result;
+                    divResult = _analyzeFile();
                 }
                 fileReader.readAsText(fileTobeRead);
-                
+
             }
             else {
                 alert("Por favor selecione arquivo texto");
@@ -42,12 +42,17 @@ var _loadFile = function () {
     else {
         alert("Arquivo(s) não suportado(s)");
     }
-    
+
 }
 
-var _analyzeFile = function(){
-    console.log("Reader: "+ fileLoaded);//esse fileLoad é o que tem o conteudo do arquivo nele que vamos trabalhar para botar a tabela
+var _analyzeFile = function () {
+    // console.log("Reader: "+ fileLoaded);//esse fileLoad é o que tem o conteudo do arquivo nele que vamos trabalhar para botar a tabela
     //esse esquema daqui de baixo tirei do trabalho de IA que usamos pra mostrar o resultado do algoritmo do caxeiro viajante
+    var id = 0;//quantidade de lexemas  
+    var classe = [];
+    var nome = [];
+    var valor = [];
+    var posicao = [];
 
 
 
@@ -55,94 +60,288 @@ var _analyzeFile = function(){
     var reVariavel = /\w+ = /g;
     var str1 = fileLoaded;
     var myArray1;
+    var nVar = 0;
+    var pos = [];
+    var y = 0;
 
     while ((myArray1 = reVariavel.exec(str1)) !== null) {
         var result1 = 'Variáveis encontradas: ' + myArray1[0] + '. ';
+        nome.push(myArray1);
+        console.log("Nome: "+nome);
         result1 += 'Finalizada na posição: ' + reVariavel.lastIndex;
-        console.log(/\n/, result1);
-    }
+        console.log(result1);
+        pos.push(reVariavel.lastIndex);
+        id = id + 1;
+        nVar = nVar + 1;
+        //------------------------------------------------------------------------
+        //Tabela 1
+        var tbody = document.querySelector("#result-table");
+        tbody.innerHTML = "";
 
-    //------------------------------------------------------------------------
-
-    // Palavras reservadas prog 1 e prog 2 -----------------------------------
-    var rePalavraResev = /enquanto|faca|escreve/g;
-    var str2 = fileLoaded;
-    var myArray2;
-
-    while ((myArray2 = rePalavraResev.exec(str2)) !== null) {
-        var result2 = 'Palavras reservadas encontradas: ' + myArray2[0] + '. ';
-        result2 += 'Na posição: ' + rePalavraResev.lastIndex;
-        console.log(result2);
-    }
-
-    //------------------------------------------------------------------------
-
-    // Operadores lógicos prog1 e prog 2 -------------------------------------
-    var reOpeLogic = /\-|\+|\*|\//g;
-    var str3 = fileLoaded;
-    var myArray3;
-
-    while ((myArray3 = reOpeLogic.exec(str3)) !== null) {
-        var result3 = 'Operadores lógicos encontrados: ' + myArray3[0] + '. ';
-        result3 += 'Na posição: ' + reOpeLogic.lastIndex;
-        console.log("----->" + result3);
-    }
-    //-------------------------------------------------------------------------
-
-    // Demilimitadores prog 1 e prog 2-----------------------------------------
-    var reDelimitadores = /\(\w*|w*\)|{w*|\w*}/g;
-    var str4 = fileLoaded;
-    var myArray4;
-
-    while ((myArray4 = reDelimitadores.exec(str4)) !== null) {
-        var result4 = 'Delimitadores encontrados: ' + myArray4[0] + '. ';
-        result4 += 'Na posição: ' + reDelimitadores.lastIndex;
-        console.log("<(((((()))))))>" + result4);
-    }
-    //------------------------------------------------------------------------
-
-    // Terminei aqui!! Em console mostra tudo e funciona perfeitamente eu acho heheh. Só por na tabela
-
-
-    var tbody =document.querySelector("#result-table");
-    tbody.innerHTML = "";
-    var id = 10;//quantidade de lexemas  
-    var classe = {};
-    var nome = "nome"; 
-    var valor = {};
-    classe.nome = "ClasseNome";
-    valor.nome = "ValorNome";
-    posicao = "Posição X";
-
-    for (var i = 0; i < id; i++) {       
+        for (var i = 0; i < id; i++) {
             var tr = document.createElement("tr");
             var tdId = document.createElement("td");
-            var tdNome = document.createElement("td");             
-            var tdClasse = document.createElement("td"); 
+            var tdNome = document.createElement("td");
+            var tdClasse = document.createElement("td");
             var tdValor = document.createElement("td");
-            var tdPosicao = document.createElement("td");            
-           
+            var tdPosicao = document.createElement("td");
+
             tdId.innerHTML = i + 1;
-            tdNome.innerHTML = nome;
-            tdClasse.innerHTML = classe.nome; 
-            tdValor.innerHTML = valor.nome;
-            tdPosicao.innerHTML = posicao;
+            tdNome.innerHTML = nome[i];           
             
+            tdClasse.innerHTML = "Variável";
+            tdValor.innerHTML = "valor";
+            tdPosicao.innerHTML = pos[i];
+
             tr.appendChild(tdId);
             tr.appendChild(tdNome);
             tr.appendChild(tdClasse);
             tr.appendChild(tdValor);
             tr.appendChild(tdPosicao);
-            
-            tbody.appendChild(tr);        
-    }
 
-   
+            tbody.appendChild(tr);
+        }
+        //fim tabela -----------------------------------------------------
+    };
+
+
+
+
+//------------------------------------------------------------------------
+
+// Palavras reservadas prog 1 e prog 2 -----------------------------------
+var rePalavraResev = /enquanto|faca|escreve/g;
+var str2 = fileLoaded;
+var myArray2;
+var nPa = 0;
+var nome2 = [];
+var valor2 = [];
+var pos2 = [];
+
+while ((myArray2 = rePalavraResev.exec(str2)) !== null) {
+    var result2 = 'Palavras reservadas encontradas: ' + myArray2[0] + '. ';
+    nome2.push(myArray2);
+    result2 += 'Finalizada na posição: ' + rePalavraResev.lastIndex;
+    pos2.push(rePalavraResev.lastIndex);
+    console.log(result2);
+    id = id + 1;
+    nPa = nPa + 1;
+
+    //------------------------------------------------------------------------
+        //Tabela 2
+        var tbody2 = document.querySelector("#result-table2");
+        tbody2.innerHTML = "";
+
+        for (var i = 0; i < nPa; i++) {
+            var tr = document.createElement("tr");
+            var tdId = document.createElement("td");
+            var tdNome = document.createElement("td");
+            var tdClasse = document.createElement("td");
+            var tdValor = document.createElement("td");
+            var tdPosicao = document.createElement("td");
+
+            tdId.innerHTML = i + 1;
+            tdNome.innerHTML = nome2[i];           
+            
+            tdClasse.innerHTML = "Palavra reservada";
+            tdValor.innerHTML = "valor";
+            tdPosicao.innerHTML = pos2[i];
+
+            tr.appendChild(tdId);
+            tr.appendChild(tdNome);
+            tr.appendChild(tdClasse);
+            tr.appendChild(tdValor);
+            tr.appendChild(tdPosicao);
+
+            tbody2.appendChild(tr);
+        }
+        //fim tabela -----------------------------------------------------
+}
+
+//------------------------------------------------------------------------
+
+// Operadores lógicos prog1 e prog 2 -------------------------------------
+var reOpeLogic = /\-|\+|\*|\/|\<|\>/g;
+var str3 = fileLoaded;
+var myArray3;
+var nOp = 0;
+var nome3 = [];
+var valor3 = [];
+var pos3 = [];
+
+while ((myArray3 = reOpeLogic.exec(str3)) !== null) {
+    var result3 = 'Operadores lógicos e condicionais encontrados: ' + myArray3[0] + '. ';
+    nome3.push(myArray3);
+    result3 += 'Finalizada na posição: ' + reOpeLogic.lastIndex;
+    pos3.push(reOpeLogic.lastIndex);
+    console.log("----->" + result3);
+    id = id + 1;
+    nOp = nOp + 1;
+
+        //Tabela 3
+        var tbody3 = document.querySelector("#result-table3");
+        tbody3.innerHTML = "";
+
+        for (var i = 0; i < nOp; i++) {
+            var tr = document.createElement("tr");
+            var tdId = document.createElement("td");
+            var tdNome = document.createElement("td");
+            var tdClasse = document.createElement("td");
+            var tdValor = document.createElement("td");
+            var tdPosicao = document.createElement("td");
+
+            tdId.innerHTML = i + 1;
+            tdNome.innerHTML = nome3[i];           
+            
+            tdClasse.innerHTML = "Operadores lógicos ou condicionais";
+            tdValor.innerHTML = nome3[i];
+            tdPosicao.innerHTML = pos3[i];
+
+            tr.appendChild(tdId);
+            tr.appendChild(tdNome);
+            tr.appendChild(tdClasse);
+            tr.appendChild(tdValor);
+            tr.appendChild(tdPosicao);
+
+            tbody3.appendChild(tr);
+        }
+        //fim tabela -----------------------------------------------------
+}
+//-------------------------------------------------------------------------
+
+// Demilimitadores prog 1 e prog 2-----------------------------------------
+var reDelimitadores = /\(|\)|\{|\}/g;
+var str4 = fileLoaded;
+var myArray4;
+var nDe = 0;
+var nome4 = [];
+var valor4 = [];
+var pos4 = [];
+
+while ((myArray4 = reDelimitadores.exec(str4)) !== null) {
+    var result4 = 'Delimitadores encontrados: ' + myArray4[0] + '. ';
+    nome4.push(myArray4);
+    result4 += 'Finalizada na posição: ' + reDelimitadores.lastIndex;
+    pos4.push(reDelimitadores.lastIndex);
+    console.log("<(((((()))))))>" + result4);
+    id = id + 1;
+    nDe = nDe + 1;
+
+        //Tabela 4
+        var tbody4 = document.querySelector("#result-table4");
+        tbody4.innerHTML = "";
+
+        for (var i = 0; i < nDe; i++) {
+            var tr = document.createElement("tr");
+            var tdId = document.createElement("td");
+            var tdNome = document.createElement("td");
+            var tdClasse = document.createElement("td");
+            var tdValor = document.createElement("td");
+            var tdPosicao = document.createElement("td");
+
+            tdId.innerHTML = i + 1;
+            tdNome.innerHTML = nome4[i];           
+            
+            tdClasse.innerHTML = "Delimitadores";
+            tdValor.innerHTML = nome4[i];
+            tdPosicao.innerHTML = pos4[i];
+
+            tr.appendChild(tdId);
+            tr.appendChild(tdNome);
+            tr.appendChild(tdClasse);
+            tr.appendChild(tdValor);
+            tr.appendChild(tdPosicao);
+
+            tbody4.appendChild(tr);
+        }
+        //fim tabela -----------------------------------------------------
+}
+//------------------------------------------------------------------------
+
+// valores prog 1 e 2----------------------------------------------------
+var reValores = /\= \d+\d/g;
+var str5 = fileLoaded;
+var myArray5;
+var nDe = 0;
+var nome5 = [];
+var valor5 = [];
+var pos5 = [];
+
+while ((myArray5 = reValores.exec(str5)) !== null) {
+    var result5 = 'Valores encontrados: ' + myArray5[0] + '. ';
+    nome5.push(myArray5);
+    result5 += 'Finalizada na posição: ' + reValores.lastIndex;
+    pos5.push(reValores.lastIndex);
+    console.log("<(--|||--)>" + result5);
+    id = id + 1;
+    nDe = nDe + 1;
+
+        //Tabela 5
+        var tbody5 = document.querySelector("#result-table4");
+        tbody5.innerHTML = "";
+
+        for (var i = 0; i < nDe; i++) {
+            var tr = document.createElement("tr");
+            var tdId = document.createElement("td");
+            var tdNome = document.createElement("td");
+            var tdClasse = document.createElement("td");
+            var tdValor = document.createElement("td");
+            var tdPosicao = document.createElement("td");
+
+            tdId.innerHTML = i + 1;
+            tdNome.innerHTML = nome5[i];           
+            
+            tdClasse.innerHTML = "Valores";
+            tdValor.innerHTML = nome5[i];
+            tdPosicao.innerHTML = pos5[i];
+
+            tr.appendChild(tdId);
+            tr.appendChild(tdNome);
+            tr.appendChild(tdClasse);
+            tr.appendChild(tdValor);
+            tr.appendChild(tdPosicao);
+
+            tbody5.appendChild(tr);
+        }
+        //fim tabela -----------------------------------------------------
+}
+
+
+
+// var tbody = document.querySelector("#result-table");
+// tbody.innerHTML = "";
+
+// for (var i = 0; i < id; i++) {
+//     var tr = document.createElement("tr");
+//     var tdId = document.createElement("td");
+//     var tdNome = document.createElement("td");
+//     var tdClasse = document.createElement("td");
+//     var tdValor = document.createElement("td");
+//     var tdPosicao = document.createElement("td");
+
+//     tdId.innerHTML = i + 1;
+//     for (var y = 0; y < nVar; y++) {
+//         tdNome.innerHTML = nome;
+//     }
+//     tdClasse.innerHTML = classe;
+//     tdValor.innerHTML = valor;
+//     tdPosicao.innerHTML = posicao;
+
+//     tr.appendChild(tdId);
+//     tr.appendChild(tdNome);
+//     tr.appendChild(tdClasse);
+//     tr.appendChild(tdValor);
+//     tr.appendChild(tdPosicao);
+
+//     tbody.appendChild(tr);
+// }
+
+
 };
 
 window.onload = function () {
     _loadFile();
-      
+
 };
 
 
